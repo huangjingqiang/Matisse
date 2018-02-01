@@ -100,6 +100,12 @@ public class MatisseActivity extends AppCompatActivity implements
             mMediaStoreCompat.setCaptureStrategy(mSpec.captureStrategy);
         }
 
+        if (mSpec.isCapture){
+            if (mMediaStoreCompat != null) {
+                mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
+            }
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

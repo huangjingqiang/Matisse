@@ -47,6 +47,7 @@ public final class SelectionSpec {
     public int gridExpectedSize;
     public float thumbnailScale;
     public ImageEngine imageEngine;
+    public boolean isCapture;
 
     private SelectionSpec() {
     }

@@ -187,6 +187,16 @@ public final class SelectionCreator {
     }
 
     /**
+     * 是否直接拍照
+     * @param isCapture
+     * @return
+     */
+    public SelectionCreator isCapture(@NonNull boolean isCapture){
+        mSelectionSpec.isCapture = isCapture;
+        return this;
+    }
+
+    /**
      * Determines whether the photo capturing is enabled or not on the media grid view.
      * <p>
      * If this value is set true, photo capturing entry will appear only on All Media's page.

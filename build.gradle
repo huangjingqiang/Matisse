@@ -18,7 +18,14 @@
 buildscript {
     repositories {
         jcenter()
-        //google()
+        mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        maven{
+            url 'https://dl.bintray.com/thelasterstar/maven/'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -29,7 +36,16 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        google()
+        mavenCentral()
+        maven {
+            url 'https://jitpack.io'
+        }
+        maven {
+            url 'https://maven.google.com/'
+        }
+        maven{
+            url 'https://dl.bintray.com/thelasterstar/maven/'
+        }
     }
 }
 

@@ -26,6 +26,13 @@
         android:elevation="4dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="56dp"

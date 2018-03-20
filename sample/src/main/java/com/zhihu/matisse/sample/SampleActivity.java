@@ -16,6 +16,7 @@
 package com.zhihu.matisse.sample;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -26,10 +27,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zhihu.matisse.GlideApp;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -58,6 +62,10 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter = new UriAdapter());
+
+        ImageView iv= findViewById(R.id.iv);
+        GlideApp.with(this).load("https://ruigongkao.oss.ruijy.cn/image/source/image/5e4c61b75bfcd045ae5d1e5e6fc8df8f.png")
+                .centerCrop().into(iv);
     }
 
     @Override
@@ -77,7 +85,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
                                             .choose(MimeType.ofAll(), false)
-                                            .isCapture(true)
+                                            .isCapture(false)
                                             .countable(true)
                                             .capture(true)
                                             .captureStrategy(
@@ -101,7 +109,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                             }
-                            mAdapter.setData(null, null);
+                            mAdapter.setData(SampleActivity.this,null, null);
                         } else {
                             Toast.makeText(SampleActivity.this, R.string.permission_request_denied, Toast.LENGTH_LONG)
                                     .show();
@@ -124,7 +132,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+            mAdapter.setData(this,Matisse.obtainResult(data), Matisse.obtainPathResult(data));
         }
     }
 
@@ -132,8 +140,10 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
         private List<Uri> mUris;
         private List<String> mPaths;
+        private Activity activity;
 
-        void setData(List<Uri> uris, List<String> paths) {
+        void setData(Activity activity,List<Uri> uris, List<String> paths) {
+            this.activity = activity;
             mUris = uris;
             mPaths = paths;
             notifyDataSetChanged();
@@ -152,6 +162,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
             holder.mUri.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
             holder.mPath.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
+
+            GlideApp.with(activity).asBitmap().load(mUris.get(position)).centerCrop().transforms(new RoundedCorners(10)).into(holder.uri_iv);
+            GlideApp.with(activity).load(mPaths.get(position)).circleCrop().into(holder.path_iv);
         }
 
         @Override
@@ -163,11 +176,15 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
             private TextView mUri;
             private TextView mPath;
+            private ImageView uri_iv;
+            private ImageView path_iv;
 
             UriViewHolder(View contentView) {
                 super(contentView);
                 mUri = (TextView) contentView.findViewById(R.id.uri);
                 mPath = (TextView) contentView.findViewById(R.id.path);
+                uri_iv = contentView.findViewById(R.id.uri_iv);
+                path_iv = contentView.findViewById(R.id.path_iv);
             }
         }
     }

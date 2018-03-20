@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 apply plugin: 'com.android.library'
-/*apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'checkstyle'*/
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 27
@@ -24,6 +24,14 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -47,7 +55,7 @@ dependencies {
 
 // jcenter configuration for novoda's bintray-release
 // $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
-/*
+
 publish {
     userOrg = 'zhihu'
     groupId = 'com.zhihu.android'
@@ -65,4 +73,4 @@ task checkstyle(type:Checkstyle) {
     showViolations true
     classpath = files()
     source 'src/main/java'
-}*/
+}
